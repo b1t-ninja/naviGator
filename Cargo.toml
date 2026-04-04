@@ -1,0 +1,8 @@
+[package]
+name = "way"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ansi_term = "0.12.1"
+clap = { version = "4.6.0", features = ["derive"] }
