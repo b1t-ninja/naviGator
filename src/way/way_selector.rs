@@ -15,36 +15,35 @@ use ratatui::{
 };
 
 pub fn select_way(ways: &[PathBuf]) -> io::Result<Option<PathBuf>> {
-  enable_raw_mode()?;
   let mut tty = fs::OpenOptions::new()
     .read(true)
     .write(true)
     .open("/dev/tty")?;
 
-  let selected_path = {
-    execute!(tty, EnterAlternateScreen)?;
-    let backend = CrosstermBackend::new(&mut tty);
-    let mut terminal = Terminal::new(backend)?;
+  enable_raw_mode()?;
+  execute!(tty, EnterAlternateScreen)?;
 
-    let mut state = ListState::default();
-    state.select(Some(0));
+  let backend = CrosstermBackend::new(&mut tty);
+  let mut terminal = Terminal::new(backend)?;
 
-    let items: Vec<ListItem> = ways
-      .iter()
-      .map(|p| ListItem::new(p.to_string_lossy().to_string()))
-      .collect();
+  let mut state = ListState::default();
+  state.select(Some(0));
 
-    let mut result = None;
-
+  let result = (|| -> io::Result<Option<PathBuf>> {
     loop {
       terminal.draw(|f| {
         let size = f.area();
         let chunks = Layout::default()
           .direction(Direction::Vertical)
-          .constraints([Constraint::Percentage(100)].as_ref())
+          .constraints([Constraint::Percentage(100)])
           .split(size);
 
-        let list = List::new(items.clone())
+        let list_items: Vec<ListItem> = ways
+          .iter()
+          .map(|p| ListItem::new(p.to_string_lossy().to_string()))
+          .collect();
+
+        let list = List::new(list_items)
           .block(Block::default().title("Select your desired path 🔻 ").borders(Borders::ALL))
           .highlight_style(Style::default().bg(Color::Green).add_modifier(Modifier::BOLD))
           .highlight_symbol("🍓 ")
@@ -55,49 +54,28 @@ pub fn select_way(ways: &[PathBuf]) -> io::Result<Option<PathBuf>> {
 
       if let Event::Key(key) = event::read()? {
         match key.code {
-          KeyCode::Char('q') | KeyCode::Esc => {
-            break;
-          }
+          KeyCode::Char('q') | KeyCode::Esc => return Ok(None),
           KeyCode::Up | KeyCode::Char('k') => {
-            let i = match state.selected() {
-              Some(i) => {
-                if i == 0 {
-                  items.len() - 1
-                } else {
-                  i - 1
-                }
-              }
-              None => 0,
-            };
-            state.select(Some(i));
+            let i = state.selected().unwrap_or(0);
+            let new_i = if i == 0 { ways.len() - 1 } else { i - 1 };
+            state.select(Some(new_i));
           }
           KeyCode::Down | KeyCode::Char('j') => {
-            let i = match state.selected() {
-              Some(i) => {
-                if i >= items.len() - 1 {
-                  0
-                } else {
-                  i + 1
-                }
-              }
-              None => 0,
-            };
-            state.select(Some(i));
+            let i = state.selected().unwrap_or(0);
+            let new_i = if i >= ways.len() - 1 { 0 } else { i + 1 };
+            state.select(Some(new_i));
           }
           KeyCode::Enter => {
-            if let Some(i) = state.selected() {
-              result = Some(ways[i].clone());
-              break;
-            }
+            return Ok(state.selected().map(|i| ways[i].clone()));
           }
           _ => {}
         }
       }
     }
-    execute!(terminal.backend_mut(), LeaveAlternateScreen)?;
-    result
-  };
+  })();
 
+  execute!(terminal.backend_mut(), LeaveAlternateScreen)?;
   disable_raw_mode()?;
-  Ok(selected_path)
+
+  result
 }

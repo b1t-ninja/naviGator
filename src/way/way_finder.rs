@@ -14,7 +14,7 @@ impl WayFinder {
     Self { args }
   }
 
-  fn find_all_subdirs(&self, base_path: &PathBuf) -> impl Iterator<Item = PathBuf> + '_ {
+  fn find_all_sub_dirs(&self, base_path: &PathBuf) -> impl Iterator<Item = PathBuf> {
     std::fs::read_dir(base_path)
       .into_iter()
       .flatten()
@@ -31,7 +31,7 @@ impl WayFinder {
       let mut next_candidates = Vec::new();
 
       for base in &candidates {
-        let matches = self.find_all_subdirs(base)
+        let matches = self.find_all_sub_dirs(base)
           .filter(|full_path| {
             full_path.file_name()
               .and_then(|name| name.to_str())
@@ -60,7 +60,7 @@ impl WayFinder {
       let mut next_candidates = Vec::new();
 
       for (total_score, base) in &candidates {
-        let matches: Vec<(i64, PathBuf)> = self.find_all_subdirs(base)
+        let matches: Vec<(i64, PathBuf)> = self.find_all_sub_dirs(base)
           .filter_map(|full_path| {
             let name = full_path.file_name()?.to_str()?;
             matcher.fuzzy_match(name, &needle).map(|score| (total_score + score, full_path))

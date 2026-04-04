@@ -1,3 +1,4 @@
+use std::process;
 mod args;
 mod way;
 
@@ -15,26 +16,27 @@ fn main() {
 
   if ways.is_empty() {
     eprintln!("{}: Could not find any matching directory", Red.bold().paint("[Error]"));
-    std::process::exit(1);
+    process::exit(1);
   }
 
   let final_way = if interactive && ways.len() > 1 {
     match select_way(&ways) {
       Ok(Some(way)) => Some(way),
-      Ok(None) => std::process::exit(0),
+      Ok(None) => process::exit(0),
       Err(e) => {
         eprintln!("{}: TUI error: {}", Red.bold().paint("[Error]"), e);
-        std::process::exit(1);
+        process::exit(1);
       }
     }
   } else {
     ways.into_iter().next()
   };
 
-  if let Some(way) = final_way {
-    println!("{}", way.display());
-  } else {
-    eprintln!("{}: Could not find any matching directory", Red.bold().paint("[Error]"));
-    std::process::exit(1);
+  match final_way {
+    Some(way) => println!("{}", way.display()),
+    None => {
+      eprintln!("{}: Could not find any matching directory", Red.bold().paint("[Error]"));
+      process::exit(1);
+    }
   }
 }
