@@ -1,5 +1,5 @@
+![ali.svg](ali.svg)
 ### `cd` but better
-
 #### What is it?
 It's basically `cd` but with fuzzy finding and or 'starts with' matching.
 So you don't have to type the entire path anymore.
