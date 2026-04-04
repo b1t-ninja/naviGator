@@ -58,11 +58,11 @@ impl WayFinder {
   scored.into_iter().map(|(_, dir)| dir).collect()
   }
 
-  pub fn find_way(&self) -> Option<PathBuf> {
+  pub fn find_way(&self) -> Vec<PathBuf> {
     if self.args.fuzzy {
-      self.find_all_matching_fuzzy_dirs().into_iter().next()
+      self.find_all_matching_fuzzy_dirs()
     } else {
-      self.find_all_matching_dirs().into_iter().next()
+      self.find_all_matching_dirs()
     }
   }
 }

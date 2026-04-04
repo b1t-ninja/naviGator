@@ -13,5 +13,8 @@ pub struct WayArgs {
   /// Enable fuzzy matching
   #[arg(short, long)]
   pub fuzzy: bool,
+  /// Interactive selection
+  #[arg(short, long)]
+  pub interactive: bool,
 }
 
