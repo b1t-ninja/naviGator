@@ -26,3 +26,4 @@ Now that the binary is registered as a command, you can invoke one of three acti
 - `way -f <path>` - navigates to the fist best match of the given path (by fuzzy matching)
 - `way -i <path>` or `way -f -i <path>`  - enables interactive mode, so if you have multiple matches, you can select the one you want (`-f` enables fuzzy matching)
 
+Oh `<path>` can be any depth, so you can do `<path>/<subpath>/<subsubpath>` and it will still work. Fuzzy or starts with matching will be applied to the subpaths just the same.
