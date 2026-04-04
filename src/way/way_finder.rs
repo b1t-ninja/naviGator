@@ -11,39 +11,36 @@ impl WayFinder {
   pub fn new(args: WayArgs) -> Self {
     Self { args }
   }
-}
 
-impl WayFinder {
-  pub fn find_all_dirs_in_cwd(&self) -> Vec<PathBuf> {
+  pub fn find_all_dirs_in_cwd(&self) -> impl Iterator<Item = PathBuf> + '_ {
     std::fs::read_dir(&self.args.cwd)
-      .unwrap()
+      .into_iter()
+      .flatten()
       .filter_map(|entry| entry.ok())
-      .filter(|entry| entry.file_type().unwrap().is_dir())
-      .map(|entry| {
+      .filter(|entry| entry.file_type().map_or(false, |ft| ft.is_dir()))
+      .filter_map(|entry| {
         entry
           .path()
           .strip_prefix(&self.args.cwd)
-          .unwrap()
-          .to_path_buf()
+          .ok()
+          .map(|p| p.to_path_buf())
       })
-      .collect()
   }
 
   fn find_all_matching_dirs(&self) -> Vec<PathBuf> {
-    let needle = self.args.path.to_string_lossy();
+    let needle = self.args.path.to_string_lossy().to_lowercase();
 
     self.find_all_dirs_in_cwd()
-      .into_iter()
       .filter(|dir| {
         dir.file_name()
           .and_then(|name| name.to_str())
-          .is_some_and(|name| name.to_lowercase().starts_with(needle.as_ref()))
+          .map(|name| name.to_lowercase().starts_with(&needle))
+          .unwrap_or(false)
       })
       .collect()
   }
 
-  pub fn find_way(&self) -> String {
-    let matches = self.find_all_matching_dirs();
-    matches.first().unwrap_or_else(|| panic!("No matching directories found for {:?}", self.args.path)).to_string_lossy().to_string()
+  pub fn find_way(&self) -> Option<PathBuf> {
+    self.find_all_matching_dirs().into_iter().next()
   }
 }

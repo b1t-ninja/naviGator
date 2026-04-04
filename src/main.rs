@@ -8,5 +8,10 @@ use crate::way::way_finder::WayFinder;
 fn main() {
   let args = WayArgs::parse();
   let finder = WayFinder::new(args);
-  println!("{}", finder.find_way());
+  if let Some(way) = finder.find_way() {
+    println!("{}", way.display());
+  } else {
+    eprintln!("No matching directories found");
+    std::process::exit(1);
+  }
 }
