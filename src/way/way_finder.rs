@@ -1,4 +1,6 @@
 use std::path::PathBuf;
+use fuzzy_matcher::FuzzyMatcher;
+use fuzzy_matcher::skim::SkimMatcherV2;
 use crate::args::way_args::WayArgs;
 
 #[derive(Debug)]
@@ -40,7 +42,27 @@ impl WayFinder {
       .collect()
   }
 
+  fn find_all_matching_fuzzy_dirs(&self) -> Vec<PathBuf> {
+  let matcher = SkimMatcherV2::default();
+  let needle = self.args.path.to_string_lossy();
+
+  let mut scored: Vec<(i64, PathBuf)> = self
+  .find_all_dirs_in_cwd()
+  .filter_map(|dir| {
+  let name = dir.file_name()?.to_str()?;
+  matcher.fuzzy_match(name, &needle).map(|score| (score, dir))
+  })
+  .collect();
+
+  scored.sort_by(|a, b| b.0.cmp(&a.0));
+  scored.into_iter().map(|(_, dir)| dir).collect()
+  }
+
   pub fn find_way(&self) -> Option<PathBuf> {
-    self.find_all_matching_dirs().into_iter().next()
+    if self.args.fuzzy {
+      self.find_all_matching_fuzzy_dirs().into_iter().next()
+    } else {
+      self.find_all_matching_dirs().into_iter().next()
+    }
   }
 }

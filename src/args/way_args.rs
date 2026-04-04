@@ -10,5 +10,8 @@ pub struct WayArgs {
   pub cwd: PathBuf,
   /// The path to navigate to
   pub path: PathBuf,
+  /// Enable fuzzy matching
+  #[arg(short, long)]
+  pub fuzzy: bool,
 }
 
