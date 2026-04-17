@@ -34,7 +34,7 @@ Now that the binary is registered as a command, you can invoke one of three acti
 
 - `w <path>` - navigates to the best match of the given path (for example `w u` will navigate to the first matching dir that starts with `u`)
 - `w -f <path>` - navigates to the fist best match of the given path (by fuzzy matching)
-- `w -i <path>` or `w -f -i <path>` - enables interactive mode, so if you have multiple matches, you can select the one you want (`-f` enables fuzzy matching) on a sidenote, `i` will only open an interactive tui, if the number of matches is more than 1, otherwise it just works as regular, since there is not much of a choice
+- `w -i <path>` or `w -f -i <path>` - enables interactive mode, so if you have multiple matches, you can select the one you want (`-f` enables fuzzy matching) on a sidenote, `i` will only open an interactive tui, if the number of matches is more than 1, otherwise it just works as regular, since there is not much of a choice. You can navigate the interactive selector by pressing `k` for up and `j` for down. Just like Vim!
 
 Oh `<path>` can be any depth, so you can do `<path>/<subpath>/<subsubpath>` and it will still work. Fuzzy or starts with matching will be applied to the subpaths just the same.
 
@@ -66,4 +66,5 @@ flag is set)
   w -f -i fi
 ```
 
-will open the above described tui, this time with fuzzy filter applieed
+will open the above described tui, this time with fuzzy filter applied
+
