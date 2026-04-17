@@ -13,7 +13,7 @@ To actually be able to navigate to a directory for you, you need to do the follo
 
 - download the repo
 - run `cargo build --release`
-- move the binary to a directory of your choice via `mv <somewhere>`
+- move the binary to a directory of your choice via `mv <bin> <somewhere>`
 - add the following line to your `.bashrc` or `.zshrc` file:
 
 ```bash
