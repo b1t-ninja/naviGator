@@ -1,18 +1,18 @@
-use std::fs;
-use std::io;
-use std::path::PathBuf;
 use crossterm::{
   event::{self, Event, KeyCode},
   execute,
-  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+  terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{
+  Terminal,
   backend::CrosstermBackend,
   layout::{Constraint, Direction, Layout},
   style::{Color, Modifier, Style},
   widgets::{Block, Borders, List, ListItem, ListState},
-  Terminal,
 };
+use std::fs;
+use std::io;
+use std::path::PathBuf;
 
 pub fn select_way(ways: &[PathBuf]) -> io::Result<Option<PathBuf>> {
   let mut tty = fs::OpenOptions::new()
@@ -44,8 +44,16 @@ pub fn select_way(ways: &[PathBuf]) -> io::Result<Option<PathBuf>> {
           .collect();
 
         let list = List::new(list_items)
-          .block(Block::default().title("Select your desired path 🔻 ").borders(Borders::ALL))
-          .highlight_style(Style::default().bg(Color::Green).add_modifier(Modifier::BOLD))
+          .block(
+            Block::default()
+              .title("Select your desired path 🔻 ")
+              .borders(Borders::ALL),
+          )
+          .highlight_style(
+            Style::default()
+              .bg(Color::Green)
+              .add_modifier(Modifier::BOLD),
+          )
           .highlight_symbol("🍓 ")
           .repeat_highlight_symbol(true);
 
