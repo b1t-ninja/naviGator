@@ -5,7 +5,8 @@
 #### What is it?
 
 It's basically `cd` but with fuzzy finding and or 'starts with' matching.
-So you don't have to type the entire path anymore.
+So you don't have to type the entire path anymore. As of rn, it only goes one
+way, meaning from you current working directory |-> futher down that dir.
 
 #### How to install it?
 
