@@ -1,0 +1,35 @@
+<svg width="182" height="182" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Original drawing, a nod to Nanami Kento (JJK): 7:3 part, goggles, beige suit, leopard tie. -->
+  <defs>
+    <pattern id="leopard" width="12" height="12" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="#d9a441"/>
+      <circle cx="3" cy="3" r="2" fill="#3b2a17"/>
+      <circle cx="9" cy="9" r="2.2" fill="#3b2a17"/>
+      <circle cx="9" cy="3" r="0.9" fill="#6b4a22"/>
+    </pattern>
+  </defs>
+  <!-- suit -->
+  <path d="M30 200 Q36 150 100 138 Q164 150 170 200 Z" fill="#c9b48a"/>
+  <!-- shirt -->
+  <path d="M80 141 L100 176 L120 141 Q100 136 80 141 Z" fill="#4a6c8c"/>
+  <!-- lapels -->
+  <path d="M80 141 L100 186 L72 160 L70 146 Z" fill="#b39d72"/>
+  <path d="M120 141 L100 186 L128 160 L130 146 Z" fill="#b39d72"/>
+  <!-- tie -->
+  <path d="M95 144 L105 144 L108 152 L104 156 L110 190 L100 200 L90 190 L96 156 L92 152 Z" fill="url(#leopard)" stroke="#3b2a17" stroke-width="0.8"/>
+  <!-- neck -->
+  <rect x="88" y="118" width="24" height="24" rx="4" fill="#e6c3a0"/>
+  <!-- face -->
+  <path d="M64 60 Q64 128 100 132 Q136 128 136 60 Q100 36 64 60 Z" fill="#f1d3b3"/>
+  <!-- hair: 7:3 side part, swept to his left -->
+  <path d="M60 78 Q56 30 100 26 Q146 26 142 74 Q136 50 112 48 L114 40 Q88 46 72 52 Q64 60 60 78 Z" fill="#e8c66a"/>
+  <path d="M112 48 L114 40 Q126 30 134 40 Q144 52 142 74 Q128 52 112 48 Z" fill="#d2ad4f"/>
+  <!-- goggles -->
+  <rect x="68" y="78" width="28" height="15" rx="3" fill="#2b2b2b" stroke="#9a8f80" stroke-width="2"/>
+  <rect x="104" y="78" width="28" height="15" rx="3" fill="#2b2b2b" stroke="#9a8f80" stroke-width="2"/>
+  <path d="M96 84 L104 84" stroke="#9a8f80" stroke-width="2"/>
+  <path d="M71 81 L80 81" stroke="#5a5a5a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M107 81 L116 81" stroke="#5a5a5a" stroke-width="2" stroke-linecap="round"/>
+  <!-- tired, unimpressed mouth -->
+  <path d="M90 114 L110 113" stroke="#9c6f55" stroke-width="2" stroke-linecap="round"/>
+</svg>
